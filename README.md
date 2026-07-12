@@ -111,21 +111,36 @@ SmartHire/
 ├── backend/
 │   ├── apps/
 │   │   ├── resumes/
+│   │   │   ├── migrations/
 │   │   │   ├── analysis.py
 │   │   │   ├── ats.py
 │   │   │   ├── job_parser.py
 │   │   │   ├── keywords.py
+│   │   │   ├── models.py
 │   │   │   ├── parser.py
 │   │   │   ├── recommendations.py
 │   │   │   ├── serializers.py
 │   │   │   ├── skill_taxonomy.py
+│   │   │   ├── tests.py
 │   │   │   ├── urls.py
 │   │   │   ├── utils.py
 │   │   │   └── views.py
+│   │   │
 │   │   └── users/
+│   │       ├── migrations/
+│   │       ├── admin.py
+│   │       ├── models.py
+│   │       ├── serializers.py
+│   │       ├── urls.py
+│   │       └── views.py
+│   │
 │   ├── config/
+│   │   ├── settings.py
+│   │   └── urls.py
+│   │
 │   ├── manage.py
 │   └── requirements.txt
+│
 ├── .gitignore
 └── README.md
 ```
