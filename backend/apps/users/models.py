@@ -5,20 +5,10 @@ from .managers import UserManager
 
 
 class User(AbstractUser):
-    class Role(models.TextChoices):
-        CANDIDATE = "candidate", "Candidate"
-        RECRUITER = "recruiter", "Recruiter"
-
     username = None
 
     email = models.EmailField(
         unique=True,
-    )
-
-    role = models.CharField(
-        max_length=20,
-        choices=Role.choices,
-        default=Role.CANDIDATE,
     )
 
     USERNAME_FIELD = "email"

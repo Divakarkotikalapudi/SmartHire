@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "corsheaders",
 
     "apps.users.apps.UsersConfig",
+    "apps.resumes.apps.ResumesConfig",
 ]
 
 MIDDLEWARE = [
@@ -122,3 +123,9 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 AUTH_USER_MODEL = "users.User"
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+}
