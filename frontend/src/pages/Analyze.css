@@ -1,0 +1,824 @@
+/* =========================================================
+   SMARTHIRE — ANALYZE PAGE
+   ========================================================= */
+
+.analyze-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(65, 105, 225, 0.08),
+      transparent 32%
+    ),
+    #f7f8fb;
+  color: #101828;
+}
+
+
+/* =========================================================
+   NAVBAR
+   ========================================================= */
+
+.analyze-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.92);
+  border-bottom: 1px solid #e8eaf0;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.analyze-nav-container {
+  width: min(1180px, calc(100% - 48px));
+  min-height: 72px;
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.analyze-logo {
+  color: #111827;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  text-decoration: none;
+}
+
+.analyze-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.analyze-nav-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 42px;
+  padding: 0 16px;
+
+  color: #667085;
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+
+  border-radius: 10px;
+
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.analyze-nav-link:hover {
+  color: #111827;
+  background: #f4f5f7;
+}
+
+.analyze-nav-link.active {
+  color: #3157d5;
+  background: #eef2ff;
+}
+
+.analyze-account-button {
+  min-height: 42px;
+  padding: 0 16px;
+
+  color: #344054;
+  background: #ffffff;
+
+  border: 1px solid #d8dce5;
+  border-radius: 10px;
+
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.analyze-account-button:hover {
+  background: #f8f9fb;
+  border-color: #bfc5d2;
+}
+
+.analyze-account-button:active {
+  transform: translateY(1px);
+}
+
+
+/* =========================================================
+   MAIN LAYOUT
+   ========================================================= */
+
+.analyze-main {
+  width: min(1040px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 72px 0 96px;
+}
+
+
+/* =========================================================
+   INTRO
+   ========================================================= */
+
+.analyze-intro {
+  max-width: 760px;
+  margin-bottom: 44px;
+}
+
+.analyze-eyebrow {
+  display: inline-block;
+  margin-bottom: 14px;
+
+  color: #3157d5;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.analyze-intro h1 {
+  max-width: 760px;
+  margin: 0;
+
+  color: #101828;
+  font-size: clamp(2.2rem, 5vw, 3.7rem);
+  font-weight: 750;
+  line-height: 1.06;
+  letter-spacing: -0.055em;
+}
+
+.analyze-intro p {
+  max-width: 700px;
+  margin: 22px 0 0;
+
+  color: #667085;
+  font-size: 1.04rem;
+  line-height: 1.75;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.analyze-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+
+/* =========================================================
+   ANALYZE PANEL
+   ========================================================= */
+
+.analyze-panel {
+  padding: 32px;
+
+  background: #ffffff;
+
+  border: 1px solid #e3e6ec;
+  border-radius: 20px;
+
+  box-shadow:
+    0 1px 2px rgba(16, 24, 40, 0.03),
+    0 12px 32px rgba(16, 24, 40, 0.04);
+}
+
+.analyze-panel-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+
+  margin-bottom: 28px;
+}
+
+.analyze-step-number {
+  flex: 0 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+
+  color: #3157d5;
+  background: #eef2ff;
+
+  border: 1px solid #dce4ff;
+  border-radius: 12px;
+
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.analyze-panel-header h2 {
+  margin: 1px 0 6px;
+
+  color: #101828;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.analyze-panel-header p {
+  margin: 0;
+
+  color: #667085;
+  font-size: 0.94rem;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   RESUME DROPZONE
+   ========================================================= */
+
+.resume-dropzone {
+  min-height: 300px;
+  padding: 42px 28px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  background: #fafbfc;
+
+  border: 1.5px dashed #c9cfda;
+  border-radius: 16px;
+
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.resume-dropzone:hover {
+  border-color: #7f98ea;
+  background: #f8faff;
+}
+
+.resume-dropzone.dragging {
+  border-color: #3157d5;
+  background: #f2f5ff;
+  transform: scale(1.005);
+}
+
+.upload-icon {
+  width: 52px;
+  height: 52px;
+  margin-bottom: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #3157d5;
+  background: #eef2ff;
+
+  border: 1px solid #dce4ff;
+  border-radius: 15px;
+
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.resume-dropzone h3 {
+  margin: 0;
+
+  color: #101828;
+  font-size: 1.08rem;
+  font-weight: 700;
+}
+
+.resume-dropzone > p {
+  margin: 8px 0 20px;
+
+  color: #7a8292;
+  font-size: 0.92rem;
+}
+
+.choose-file-button {
+  min-height: 44px;
+  padding: 0 20px;
+
+  color: #ffffff;
+  background: #3157d5;
+
+  border: 1px solid #3157d5;
+  border-radius: 10px;
+
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow: 0 8px 18px rgba(49, 87, 213, 0.18);
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.choose-file-button:hover {
+  background: #2749bd;
+  border-color: #2749bd;
+
+  box-shadow: 0 10px 22px rgba(49, 87, 213, 0.24);
+}
+
+.choose-file-button:active {
+  transform: translateY(1px);
+}
+
+.upload-requirements {
+  margin-top: 16px;
+
+  color: #98a2b3;
+  font-size: 0.78rem;
+}
+
+
+/* =========================================================
+   SELECTED FILE
+   ========================================================= */
+
+.selected-file-card {
+  min-height: 104px;
+  padding: 20px;
+
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  background: #f9fafb;
+
+  border: 1px solid #e1e5eb;
+  border-radius: 14px;
+}
+
+.selected-file-icon {
+  flex: 0 0 auto;
+
+  width: 54px;
+  height: 54px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #3157d5;
+  background: #eef2ff;
+
+  border: 1px solid #dce4ff;
+  border-radius: 12px;
+
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.selected-file-info {
+  min-width: 0;
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.selected-file-info strong {
+  overflow: hidden;
+
+  color: #101828;
+  font-size: 0.94rem;
+  font-weight: 700;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.selected-file-info span {
+  color: #7a8292;
+  font-size: 0.82rem;
+}
+
+.remove-file-button {
+  flex: 0 0 auto;
+
+  min-height: 40px;
+  padding: 0 14px;
+
+  color: #b42318;
+  background: #ffffff;
+
+  border: 1px solid #f1c9c5;
+  border-radius: 9px;
+
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.remove-file-button:hover {
+  background: #fff5f4;
+  border-color: #e7a9a3;
+}
+
+
+/* =========================================================
+   JOB DESCRIPTION
+   ========================================================= */
+
+.job-description-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.job-description-field label {
+  margin-bottom: 10px;
+
+  color: #344054;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.job-description-field textarea {
+  width: 100%;
+  min-height: 290px;
+  padding: 18px;
+
+  resize: vertical;
+
+  color: #101828;
+  background: #ffffff;
+
+  border: 1px solid #d5dae3;
+  border-radius: 12px;
+
+  outline: none;
+
+  font: inherit;
+  font-size: 0.94rem;
+  line-height: 1.7;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.job-description-field textarea::placeholder {
+  color: #98a2b3;
+}
+
+.job-description-field textarea:hover {
+  border-color: #b8c0ce;
+}
+
+.job-description-field textarea:focus {
+  border-color: #5575df;
+  box-shadow: 0 0 0 4px rgba(49, 87, 213, 0.1);
+}
+
+.job-description-meta {
+  margin-top: 10px;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+
+  color: #8a93a3;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.job-description-meta span:last-child {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.analyze-error {
+  padding: 14px 16px;
+
+  color: #b42318;
+  background: #fff4f3;
+
+  border: 1px solid #f4c7c3;
+  border-radius: 10px;
+
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   SUBMIT SECTION
+   ========================================================= */
+
+.analyze-submit-section {
+  padding: 24px 26px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+
+  background: #111827;
+
+  border: 1px solid #111827;
+  border-radius: 18px;
+
+  box-shadow: 0 16px 36px rgba(17, 24, 39, 0.12);
+}
+
+.analyze-submit-section strong {
+  display: block;
+  margin-bottom: 6px;
+
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.analyze-submit-section p {
+  max-width: 570px;
+  margin: 0;
+
+  color: #aeb7c6;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.analyze-submit-button {
+  flex: 0 0 auto;
+
+  min-height: 48px;
+  padding: 0 22px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  color: #ffffff;
+  background: #3157d5;
+
+  border: 1px solid #3157d5;
+  border-radius: 11px;
+
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.analyze-submit-button:hover:not(:disabled) {
+  background: #4165dc;
+  border-color: #4165dc;
+}
+
+.analyze-submit-button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.analyze-submit-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+
+/* =========================================================
+   ANALYSIS EXPECTATIONS
+   ========================================================= */
+
+.analysis-expectations {
+  margin-top: 64px;
+}
+
+.analysis-expectations-label {
+  display: block;
+  margin-bottom: 18px;
+
+  color: #7a8292;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.analysis-expectations-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+
+  overflow: hidden;
+
+  background: #e2e5eb;
+
+  border: 1px solid #e2e5eb;
+  border-radius: 16px;
+}
+
+.analysis-expectations-grid > div {
+  min-height: 150px;
+  padding: 24px;
+
+  background: #ffffff;
+}
+
+.analysis-expectations-grid strong {
+  display: block;
+  margin-bottom: 9px;
+
+  color: #101828;
+  font-size: 0.94rem;
+  font-weight: 700;
+}
+
+.analysis-expectations-grid p {
+  margin: 0;
+
+  color: #737c8c;
+  font-size: 0.84rem;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   ACCESSIBILITY / FOCUS
+   ========================================================= */
+
+.analyze-logo:focus-visible,
+.analyze-nav-link:focus-visible,
+.analyze-account-button:focus-visible,
+.choose-file-button:focus-visible,
+.remove-file-button:focus-visible,
+.analyze-submit-button:focus-visible {
+  outline: 3px solid rgba(49, 87, 213, 0.25);
+  outline-offset: 3px;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .analyze-main {
+    padding-top: 56px;
+  }
+
+  .analysis-expectations-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .analyze-submit-section {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .analyze-submit-button {
+    width: 100%;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 640px) {
+  .analyze-nav-container {
+    width: min(100% - 32px, 1180px);
+    min-height: 64px;
+  }
+
+  .analyze-nav-link {
+    display: none;
+  }
+
+  .analyze-account-button {
+    min-height: 40px;
+    padding: 0 13px;
+  }
+
+  .analyze-main {
+    width: min(100% - 32px, 1040px);
+    padding: 44px 0 72px;
+  }
+
+  .analyze-intro {
+    margin-bottom: 32px;
+  }
+
+  .analyze-intro h1 {
+    font-size: clamp(2rem, 11vw, 2.8rem);
+  }
+
+  .analyze-intro p {
+    margin-top: 18px;
+    font-size: 0.96rem;
+  }
+
+  .analyze-panel {
+    padding: 22px;
+    border-radius: 16px;
+  }
+
+  .analyze-panel-header {
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+
+  .analyze-step-number {
+    width: 38px;
+    height: 38px;
+  }
+
+  .analyze-panel-header h2 {
+    font-size: 1.12rem;
+  }
+
+  .resume-dropzone {
+    min-height: 270px;
+    padding: 34px 18px;
+  }
+
+  .selected-file-card {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .selected-file-info {
+    width: calc(100% - 70px);
+  }
+
+  .remove-file-button {
+    width: 100%;
+  }
+
+  .job-description-field textarea {
+    min-height: 260px;
+    padding: 15px;
+  }
+
+  .job-description-meta {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .analyze-submit-section {
+    padding: 22px;
+    border-radius: 15px;
+  }
+
+  .analysis-expectations {
+    margin-top: 48px;
+  }
+
+  .analysis-expectations-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .analysis-expectations-grid > div {
+    min-height: auto;
+  }
+}
