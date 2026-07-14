@@ -10,9 +10,6 @@ const API_BASE_URL =
   "http://127.0.0.1:8000/api/resumes";
 
 
-/**
- * Safely attempts to parse a JSON response.
- */
 async function parseResponse(response) {
   try {
     return await response.json();
@@ -22,24 +19,36 @@ async function parseResponse(response) {
 }
 
 
-/**
- * Extracts a useful error message from a Django REST Framework response.
- */
-function getErrorMessage(data, fallbackMessage) {
-  if (!data || typeof data !== "object") {
+function getErrorMessage(
+  data,
+  fallbackMessage
+) {
+  if (
+    !data ||
+    typeof data !== "object"
+  ) {
     return fallbackMessage;
   }
 
-  if (typeof data.detail === "string") {
+  if (
+    typeof data.detail === "string"
+  ) {
     return data.detail;
   }
 
-  for (const value of Object.values(data)) {
-    if (Array.isArray(value) && value.length > 0) {
+  for (
+    const value of Object.values(data)
+  ) {
+    if (
+      Array.isArray(value) &&
+      value.length > 0
+    ) {
       return String(value[0]);
     }
 
-    if (typeof value === "string") {
+    if (
+      typeof value === "string"
+    ) {
       return value;
     }
   }
@@ -48,68 +57,98 @@ function getErrorMessage(data, fallbackMessage) {
 }
 
 
-/**
- * Performs an authenticated API request.
- *
- * If the access token has expired:
- * 1. Refresh the access token.
- * 2. Retry the original request once.
- */
-async function authenticatedFetch(url, options = {}) {
-  let accessToken = getAccessToken();
+function getNetworkErrorMessage() {
+  return (
+    "Unable to connect to the server. " +
+    "Please check your connection and try again."
+  );
+}
+
+
+async function safeFetch(
+  url,
+  options = {}
+) {
+  try {
+    return await fetch(
+      url,
+      options
+    );
+  } catch {
+    throw new Error(
+      getNetworkErrorMessage()
+    );
+  }
+}
+
+
+async function authenticatedFetch(
+  url,
+  options = {}
+) {
+  let accessToken =
+    getAccessToken();
 
   if (!accessToken) {
     clearAuthTokens();
 
     throw new Error(
-      "You are not signed in. Please sign in again."
+      "You are not signed in. " +
+      "Please sign in again."
     );
   }
 
-  const createRequestOptions = (token) => ({
+  const createRequestOptions = (
+    token
+  ) => ({
     ...options,
 
     headers: {
       ...(options.headers || {}),
 
-      Authorization: `Bearer ${token}`,
+      Authorization:
+        `Bearer ${token}`,
     },
   });
 
-  let response = await fetch(
+  let response = await safeFetch(
     url,
-    createRequestOptions(accessToken)
+    createRequestOptions(
+      accessToken
+    )
   );
 
   if (response.status === 401) {
     try {
-      accessToken = await refreshAccessToken();
+      accessToken =
+        await refreshAccessToken();
     } catch (error) {
       clearAuthTokens();
+
       throw error;
     }
 
-    response = await fetch(
+    response = await safeFetch(
       url,
-      createRequestOptions(accessToken)
+      createRequestOptions(
+        accessToken
+      )
     );
   }
 
   if (response.status === 401) {
     clearAuthTokens();
+
+    throw new Error(
+      "Your session has expired. " +
+      "Please sign in again."
+    );
   }
 
   return response;
 }
 
 
-/**
- * Uploads a resume and job description for analysis.
- *
- * Do not manually set Content-Type here.
- * The browser automatically creates the correct
- * multipart/form-data boundary for FormData.
- */
 export async function analyzeResume(
   resumeFile,
   jobDescription
@@ -120,13 +159,16 @@ export async function analyzeResume(
     );
   }
 
-  if (!jobDescription?.trim()) {
+  if (
+    !jobDescription?.trim()
+  ) {
     throw new Error(
       "Please enter a job description."
     );
   }
 
-  const formData = new FormData();
+  const formData =
+    new FormData();
 
   formData.append(
     "resume",
@@ -138,21 +180,26 @@ export async function analyzeResume(
     jobDescription.trim()
   );
 
-  const response = await authenticatedFetch(
-    `${API_BASE_URL}/analyze/`,
-    {
-      method: "POST",
-      body: formData,
-    }
-  );
+  const response =
+    await authenticatedFetch(
+      `${API_BASE_URL}/analyze/`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
 
-  const data = await parseResponse(response);
+  const data =
+    await parseResponse(
+      response
+    );
 
   if (!response.ok) {
     throw new Error(
       getErrorMessage(
         data,
-        "Resume analysis failed. Please try again."
+        "Unable to analyze your resume. " +
+        "Please try again."
       )
     );
   }
@@ -161,19 +208,19 @@ export async function analyzeResume(
 }
 
 
-/**
- * Returns all saved analyses belonging to
- * the currently authenticated user.
- */
 export async function getAnalysisHistory() {
-  const response = await authenticatedFetch(
-    `${API_BASE_URL}/history/`,
-    {
-      method: "GET",
-    }
-  );
+  const response =
+    await authenticatedFetch(
+      `${API_BASE_URL}/history/`,
+      {
+        method: "GET",
+      }
+    );
 
-  const data = await parseResponse(response);
+  const data =
+    await parseResponse(
+      response
+    );
 
   if (!response.ok) {
     throw new Error(
@@ -188,11 +235,9 @@ export async function getAnalysisHistory() {
 }
 
 
-/**
- * Returns one saved analysis belonging to
- * the currently authenticated user.
- */
-export async function getAnalysisById(analysisId) {
+export async function getAnalysisById(
+  analysisId
+) {
   if (
     analysisId === null ||
     analysisId === undefined ||
@@ -203,16 +248,27 @@ export async function getAnalysisById(analysisId) {
     );
   }
 
-  const response = await authenticatedFetch(
-    `${API_BASE_URL}/history/${analysisId}/`,
-    {
-      method: "GET",
-    }
-  );
+  const response =
+    await authenticatedFetch(
+      `${API_BASE_URL}/history/${analysisId}/`,
+      {
+        method: "GET",
+      }
+    );
 
-  const data = await parseResponse(response);
+  const data =
+    await parseResponse(
+      response
+    );
 
   if (!response.ok) {
+    if (response.status === 404) {
+      throw new Error(
+        "This analysis was not found or " +
+        "is not available to your account."
+      );
+    }
+
     throw new Error(
       getErrorMessage(
         data,

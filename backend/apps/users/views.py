@@ -1,36 +1,45 @@
 from rest_framework import status
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import (
+    AllowAny,
+    IsAuthenticated,
+)
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .serializers import RegisterSerializer
 
 
+def serialize_user(user):
+    return {
+        "id": user.id,
+        "email": user.email,
+        "first_name": user.first_name,
+        "last_name": user.last_name,
+    }
+
+
 class RegisterView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        serializer = RegisterSerializer(data=request.data)
+        serializer = RegisterSerializer(
+            data=request.data
+        )
 
-        if serializer.is_valid():
-            user = serializer.save()
+        serializer.is_valid(
+            raise_exception=True
+        )
 
-            return Response(
-                {
-                    "message": "User registered successfully.",
-                    "user": {
-                        "id": user.id,
-                        "email": user.email,
-                        "first_name": user.first_name,
-                        "last_name": user.last_name,
-                    },
-                },
-                status=status.HTTP_201_CREATED,
-            )
+        user = serializer.save()
 
         return Response(
-            serializer.errors,
-            status=status.HTTP_400_BAD_REQUEST,
+            {
+                "message": (
+                    "User registered successfully."
+                ),
+                "user": serialize_user(user),
+            },
+            status=status.HTTP_201_CREATED,
         )
 
 
@@ -38,14 +47,7 @@ class CurrentUserView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        user = request.user
-
         return Response(
-            {
-                "id": user.id,
-                "email": user.email,
-                "first_name": user.first_name,
-                "last_name": user.last_name,
-            },
+            serialize_user(request.user),
             status=status.HTTP_200_OK,
         )

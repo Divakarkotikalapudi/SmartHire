@@ -1,5 +1,10 @@
+from django.http import Http404
+
 from rest_framework import status
-from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.generics import (
+    ListAPIView,
+    RetrieveAPIView,
+)
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -15,7 +20,10 @@ from .serializers import (
     ResumeAnalysisHistorySerializer,
     ResumeAnalysisSerializer,
 )
-from .utils import extract_resume_text
+from .utils import (
+    ResumeExtractionError,
+    extract_resume_text,
+)
 
 
 class ResumeAnalysisView(APIView):
@@ -29,7 +37,9 @@ class ResumeAnalysisView(APIView):
     the frontend.
     """
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [
+        IsAuthenticated
+    ]
 
     def post(self, request):
         serializer = ResumeAnalysisSerializer(
@@ -52,9 +62,20 @@ class ResumeAnalysisView(APIView):
         # 1. EXTRACT RESUME TEXT
         # ---------------------------------------------------------------
 
-        resume_text = extract_resume_text(
-            resume
-        )
+        try:
+            resume_text = extract_resume_text(
+                resume
+            )
+
+        except ResumeExtractionError as exc:
+            return Response(
+                {
+                    "resume": [
+                        str(exc)
+                    ]
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         # ---------------------------------------------------------------
         # 2. PARSE RESUME
@@ -229,15 +250,16 @@ class ResumeAnalysisView(APIView):
             analysis_result=analysis_result,
         )
 
-        # Add the database ID to the response.
-        # This will later allow the frontend to reopen
-        # this exact saved analysis.
-        analysis_result["analysis_id"] = (
-            saved_analysis.id
-        )
+        # Add the database ID to the response so the frontend
+        # can reopen this exact saved analysis later.
 
-        # Keep the saved JSON result consistent with
-        # the response returned to the frontend.
+        analysis_result[
+            "analysis_id"
+        ] = saved_analysis.id
+
+        # Keep the saved JSON result consistent with the
+        # response returned to the frontend.
+
         saved_analysis.analysis_result = (
             analysis_result
         )
@@ -310,3 +332,14 @@ class ResumeAnalysisDetailView(
         return ResumeAnalysis.objects.filter(
             user=self.request.user
         )
+
+    def get_object(self):
+        try:
+            return self.get_queryset().get(
+                pk=self.kwargs["pk"]
+            )
+
+        except ResumeAnalysis.DoesNotExist as exc:
+            raise Http404(
+                "Analysis not found."
+            ) from exc

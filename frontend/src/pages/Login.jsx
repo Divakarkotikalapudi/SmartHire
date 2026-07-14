@@ -4,23 +4,47 @@ import {
   useLocation,
   useNavigate,
 } from "react-router-dom";
+
 import { loginUser } from "../api/auth";
 import "./Login.css";
+
 
 function Login() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const registrationSuccess =
+    location.state?.registrationSuccess === true;
+
+  const registeredEmail =
+    location.state?.email || "";
+
+  const [email, setEmail] = useState(
+    registeredEmail
+  );
+
+  const [password, setPassword] =
+    useState("");
+
+  const [
+    showPassword,
+    setShowPassword,
+  ] = useState(false);
+
+  const [error, setError] =
+    useState("");
+
+  const [loading, setLoading] =
+    useState(false);
 
   const redirectPath =
-    location.state?.from?.pathname || "/analyze";
+    location.state?.from?.pathname ||
+    "/analyze";
 
-  const handleSubmit = async (event) => {
+
+  const handleSubmit = async (
+    event
+  ) => {
     event.preventDefault();
 
     if (loading) {
@@ -31,27 +55,40 @@ function Login() {
     setLoading(true);
 
     try {
-      await loginUser(email, password);
+      await loginUser(
+        email,
+        password
+      );
 
-      navigate(redirectPath, {
-        replace: true,
-      });
+      navigate(
+        redirectPath,
+        {
+          replace: true,
+        }
+      );
     } catch (error) {
       setError(
         error instanceof Error
           ? error.message
-          : "Unable to sign in. Please try again."
+          : (
+              "Unable to sign in. " +
+              "Please try again."
+            )
       );
     } finally {
       setLoading(false);
     }
   };
 
+
   return (
     <div className="login-page">
       {/* Left Side */}
       <section className="login-showcase">
-        <Link to="/" className="login-brand">
+        <Link
+          to="/"
+          className="login-brand"
+        >
           SmartHire
         </Link>
 
@@ -66,56 +103,88 @@ function Login() {
           </h1>
 
           <p>
-            Get clear insights into ATS readiness, skill gaps,
-            and job-specific matching.
+            Get clear insights into ATS readiness,
+            skill gaps, and job-specific matching.
           </p>
 
           <div className="preview-scores">
             <div className="preview-score-card">
-              <span>ATS READINESS</span>
-              <strong>92%</strong>
-              <small>Excellent</small>
+              <span>
+                ATS READINESS
+              </span>
+
+              <strong>
+                92%
+              </strong>
+
+              <small>
+                Excellent
+              </small>
             </div>
 
             <div className="preview-score-card">
-              <span>RESUME MATCH</span>
-              <strong>78%</strong>
-              <small>Strong Match</small>
+              <span>
+                RESUME MATCH
+              </span>
+
+              <strong>
+                78%
+              </strong>
+
+              <small>
+                Strong Match
+              </small>
             </div>
           </div>
 
           <div className="login-benefits">
             <div className="benefit-item">
-              <span className="benefit-icon">✓</span>
+              <span className="benefit-icon">
+                ✓
+              </span>
 
               <div>
-                <strong>ATS Readiness Analysis</strong>
+                <strong>
+                  ATS Readiness Analysis
+                </strong>
+
                 <p>
-                  Understand your resume&apos;s structural
-                  readiness.
+                  Understand your resume&apos;s
+                  structural readiness.
                 </p>
               </div>
             </div>
 
             <div className="benefit-item">
-              <span className="benefit-icon">✓</span>
+              <span className="benefit-icon">
+                ✓
+              </span>
 
               <div>
-                <strong>Job-Specific Matching</strong>
+                <strong>
+                  Job-Specific Matching
+                </strong>
+
                 <p>
-                  Compare your resume with the role you are
-                  targeting.
+                  Compare your resume with the role
+                  you are targeting.
                 </p>
               </div>
             </div>
 
             <div className="benefit-item">
-              <span className="benefit-icon">✓</span>
+              <span className="benefit-icon">
+                ✓
+              </span>
 
               <div>
-                <strong>Actionable Recommendations</strong>
+                <strong>
+                  Actionable Recommendations
+                </strong>
+
                 <p>
-                  Identify important areas you can improve.
+                  Identify important areas you can
+                  improve.
                 </p>
               </div>
             </div>
@@ -123,14 +192,18 @@ function Login() {
         </div>
 
         <p className="showcase-footer">
-          Intelligent resume analysis for modern job seekers.
+          Intelligent resume analysis for modern
+          job seekers.
         </p>
       </section>
+
 
       {/* Right Side */}
       <section className="login-form-section">
         <div className="mobile-login-brand">
-          <Link to="/">SmartHire</Link>
+          <Link to="/">
+            SmartHire
+          </Link>
         </div>
 
         <div className="login-form-container">
@@ -139,12 +212,28 @@ function Login() {
               WELCOME BACK
             </span>
 
-            <h2>Sign in to SmartHire</h2>
+            <h2>
+              Sign in to SmartHire
+            </h2>
 
             <p>
-              Sign in to analyze your resume and job alignment.
+              Sign in to analyze your resume and
+              job alignment.
             </p>
           </div>
+
+
+          {registrationSuccess && (
+            <p
+              className="login-success"
+              role="status"
+              aria-live="polite"
+            >
+              Account created successfully.
+              You can now sign in.
+            </p>
+          )}
+
 
           <form
             className="login-form"
@@ -163,7 +252,9 @@ function Login() {
                 autoComplete="email"
                 value={email}
                 onChange={(event) => {
-                  setEmail(event.target.value);
+                  setEmail(
+                    event.target.value
+                  );
 
                   if (error) {
                     setError("");
@@ -174,6 +265,7 @@ function Login() {
               />
             </div>
 
+
             <div className="form-group">
               <label htmlFor="password">
                 Password
@@ -181,14 +273,20 @@ function Login() {
 
               <div className="password-field">
                 <input
-                  type={showPassword ? "text" : "password"}
+                  type={
+                    showPassword
+                      ? "text"
+                      : "password"
+                  }
                   id="password"
                   name="password"
                   placeholder="Enter your password"
                   autoComplete="current-password"
                   value={password}
                   onChange={(event) => {
-                    setPassword(event.target.value);
+                    setPassword(
+                      event.target.value
+                    );
 
                     if (error) {
                       setError("");
@@ -197,6 +295,7 @@ function Login() {
                   disabled={loading}
                   required
                 />
+
                 <button
                   type="button"
                   className="password-toggle"
@@ -205,10 +304,14 @@ function Login() {
                       ? "Hide password"
                       : "Show password"
                   }
-                  aria-pressed={showPassword}
+                  aria-pressed={
+                    showPassword
+                  }
                   onClick={() =>
                     setShowPassword(
-                      (currentValue) =>
+                      (
+                        currentValue
+                      ) =>
                         !currentValue
                     )
                   }
@@ -221,6 +324,7 @@ function Login() {
               </div>
             </div>
 
+
             {error && (
               <p
                 className="login-error"
@@ -230,6 +334,7 @@ function Login() {
                 {error}
               </p>
             )}
+
 
             <button
               type="submit"
@@ -242,6 +347,7 @@ function Login() {
               ) : (
                 <>
                   Sign In
+
                   <span aria-hidden="true">
                     →
                   </span>
@@ -250,12 +356,15 @@ function Login() {
             </button>
           </form>
 
+
           <p className="signup-link">
             Don&apos;t have an account?{" "}
+
             <Link to="/signup">
               Create an account
             </Link>
           </p>
+
 
           <Link
             to="/"
@@ -268,5 +377,6 @@ function Login() {
     </div>
   );
 }
+
 
 export default Login;

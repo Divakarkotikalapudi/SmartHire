@@ -211,7 +211,6 @@ def extract_sections(resume_text):
     section_lines = initialize_sections()
 
     preamble_lines = []
-    unknown_lines = []
 
     current_section = None
 
@@ -259,9 +258,7 @@ def extract_sections(resume_text):
         "preamble": "\n".join(
             preamble_lines
         ).strip(),
-        "unknown_content": "\n".join(
-            unknown_lines
-        ).strip(),
+        "unknown_content": "",
     }
 
 
@@ -589,13 +586,20 @@ def build_parser_metadata(
 # ---------------------------------------------------------------------------
 
 def parse_resume(resume_text):
-    if not isinstance(
-        resume_text,
-        str,
-    ):
+    if not isinstance(resume_text, str):
         raise ValueError(
-            "Resume content must be text."
+            "Resume text must be a string."
         )
+
+    resume_text = resume_text.strip()
+
+    if not resume_text:
+        raise ValueError(
+            "Resume text cannot be empty."
+        )
+
+    # Keep the remainder of your existing
+    # parse_resume logic exactly as it is.
 
     cleaned_resume_text = (
         resume_text.strip()

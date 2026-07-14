@@ -9,10 +9,13 @@ class RegisterSerializer(serializers.ModelSerializer):
         write_only=True,
         required=True,
         validators=[validate_password],
+        style={"input_type": "password"},
     )
+
     password_confirm = serializers.CharField(
         write_only=True,
         required=True,
+        style={"input_type": "password"},
     )
 
     class Meta:
@@ -28,12 +31,34 @@ class RegisterSerializer(serializers.ModelSerializer):
         read_only_fields = ("id",)
 
     def validate_email(self, value):
-        return value.lower().strip()
+        email = value.strip().lower()
+
+        if User.objects.filter(
+            email__iexact=email
+        ).exists():
+            raise serializers.ValidationError(
+                "An account with this email already exists."
+            )
+
+        return email
+
+    def validate_first_name(self, value):
+        return value.strip()
+
+    def validate_last_name(self, value):
+        return value.strip()
 
     def validate(self, attrs):
-        if attrs["password"] != attrs["password_confirm"]:
+        if (
+            attrs["password"]
+            != attrs["password_confirm"]
+        ):
             raise serializers.ValidationError(
-                {"password_confirm": "Passwords do not match."}
+                {
+                    "password_confirm": (
+                        "Passwords do not match."
+                    )
+                }
             )
 
         return attrs
@@ -41,9 +66,9 @@ class RegisterSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data.pop("password_confirm")
 
+        password = validated_data.pop("password")
+
         return User.objects.create_user(
-            email=validated_data["email"],
-            password=validated_data["password"],
-            first_name=validated_data.get("first_name", ""),
-            last_name=validated_data.get("last_name", ""),
+            password=password,
+            **validated_data,
         )

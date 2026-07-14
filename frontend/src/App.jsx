@@ -1,4 +1,8 @@
-import { Route, Routes } from "react-router-dom";
+import {
+  Navigate,
+  Route,
+  Routes,
+} from "react-router-dom";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -40,7 +44,6 @@ function App() {
         }
       />
 
-      {/* Results from a newly completed analysis */}
       <Route
         path="/results"
         element={
@@ -50,7 +53,6 @@ function App() {
         }
       />
 
-      {/* Previously saved analysis */}
       <Route
         path="/results/:analysisId"
         element={
@@ -60,13 +62,24 @@ function App() {
         }
       />
 
-      {/* Analysis history */}
       <Route
         path="/history"
         element={
           <ProtectedRoute>
             <History />
           </ProtectedRoute>
+        }
+      />
+
+
+      {/* Unknown routes */}
+      <Route
+        path="*"
+        element={
+          <Navigate
+            to="/"
+            replace
+          />
         }
       />
     </Routes>

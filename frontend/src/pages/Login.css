@@ -355,3 +355,12 @@
   opacity: 0.65;
   transform: none;
 }
+
+.login-success {
+  margin-bottom: 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid currentColor;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}

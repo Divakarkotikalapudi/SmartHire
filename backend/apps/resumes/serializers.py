@@ -5,6 +5,10 @@ from rest_framework import serializers
 from .models import ResumeAnalysis
 
 
+MAX_RESUME_FILE_SIZE = 5 * 1024 * 1024
+MAX_JOB_DESCRIPTION_LENGTH = 20_000
+
+
 class ResumeAnalysisSerializer(serializers.Serializer):
     """
     Validates the input required to perform a new resume analysis.
@@ -18,6 +22,7 @@ class ResumeAnalysisSerializer(serializers.Serializer):
         required=True,
         allow_blank=False,
         trim_whitespace=True,
+        max_length=MAX_JOB_DESCRIPTION_LENGTH,
     )
 
     def validate_resume(self, file):
@@ -33,6 +38,11 @@ class ResumeAnalysisSerializer(serializers.Serializer):
         if extension not in allowed_extensions:
             raise serializers.ValidationError(
                 "Only PDF and DOCX files are allowed."
+            )
+
+        if file.size > MAX_RESUME_FILE_SIZE:
+            raise serializers.ValidationError(
+                "Resume file size must not exceed 5 MB."
             )
 
         return file
