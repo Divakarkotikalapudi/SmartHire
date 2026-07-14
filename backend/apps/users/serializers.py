@@ -20,6 +20,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
+
         fields = (
             "id",
             "email",
@@ -28,10 +29,19 @@ class RegisterSerializer(serializers.ModelSerializer):
             "password",
             "password_confirm",
         )
+
         read_only_fields = ("id",)
 
     def validate_email(self, value):
-        email = value.strip().lower()
+        email = value.lower().strip()
+
+        domain = email.rsplit("@", 1)[-1]
+
+        if "." not in domain:
+            raise serializers.ValidationError(
+                "Enter a valid email address with a complete domain, "
+                "for example name@gmail.com."
+            )
 
         if User.objects.filter(
             email__iexact=email
@@ -64,9 +74,13 @@ class RegisterSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
-        validated_data.pop("password_confirm")
+        validated_data.pop(
+            "password_confirm"
+        )
 
-        password = validated_data.pop("password")
+        password = validated_data.pop(
+            "password"
+        )
 
         return User.objects.create_user(
             password=password,
