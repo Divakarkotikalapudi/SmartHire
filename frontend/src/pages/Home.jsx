@@ -100,20 +100,7 @@ function Home() {
               </div>
 
                            
-              <div className="recommendation">
-                <div className="recommendation-icon">
-                  !
-                </div>
-
-                <div>
-                  <span>TOP RECOMMENDATION</span>
-
-                  <p>
-                    Add relevant Django experience to improve
-                    alignment with this role.
-                  </p>
-                </div>
-              </div>
+             
             </div>
           </div>
         </section>
