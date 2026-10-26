@@ -99,14 +99,7 @@ function Home() {
                 </div>
               </div>
 
-              <div className="skills-section">
-                <p className="small-label">
-                  SKILL ALIGNMENT
-                </p>
-
-                
-              </div>
-
+                           
               <div className="recommendation">
                 <div className="recommendation-icon">
                   !
