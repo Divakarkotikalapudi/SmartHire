@@ -104,23 +104,7 @@ function Home() {
                   SKILL ALIGNMENT
                 </p>
 
-                <div className="skill-row">
-                  <span className="skill matched">
-                    Python
-                  </span>
-
-                  <span className="skill matched">
-                    React
-                  </span>
-
-                  <span className="skill matched">
-                    Git
-                  </span>
-
-                  <span className="skill missing">
-                    Django
-                  </span>
-                </div>
+                
               </div>
 
               <div className="recommendation">
