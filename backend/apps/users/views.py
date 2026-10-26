@@ -51,3 +51,30 @@ class CurrentUserView(APIView):
             serialize_user(request.user),
             status=status.HTTP_200_OK,
         )
+
+from django.db import connection
+from django.conf import settings
+
+
+class DatabaseHealthView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT 1")
+                cursor.fetchone()
+
+            return Response({
+                "database": "connected",
+                "engine": connection.vendor,
+            })
+
+        except Exception:
+            import logging
+            logging.exception("Database health check failed")
+
+            return Response(
+                {"database": "connection_failed"},
+                status=status.HTTP_503_SERVICE_UNAVAILABLE,
+            )

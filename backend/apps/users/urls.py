@@ -34,4 +34,14 @@ urlpatterns = [
         CurrentUserView.as_view(),
         name="current_user",
     ),
+    path(
+    "health/db/",
+    DatabaseHealthView.as_view(),
+    name="database_health",
+    ),
 ]
+from .views import (
+    CurrentUserView,
+    RegisterView,
+    DatabaseHealthView,
+)
